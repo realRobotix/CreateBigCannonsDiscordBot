@@ -12,3 +12,5 @@ class Env:
         self.BOT_DEVELOPERS: set = os.environ["BOT_DEVELOPERS"]
         self.BOT_AUTO_RELOAD: bool = os.environ["BOT_AUTO_RELOAD"]
         self.BOT_AUTO_LOAD: bool = os.environ["BOT_AUTO_LOAD"]
+        self.GH_USER: str = os.environ["GH_USER"]
+        self.GH_TOKEN: str = os.environ["GH_TOKEN"]
