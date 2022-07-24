@@ -12,8 +12,9 @@ class Manager(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(name="manager", description="used to manage extensions")
-    @commands.is_owner()
+    @commands.check(lambda i: str(i.author.id) in i.bot.owner_ids)
     async def manager(self, inter: disnake.ApplicationCommandInteraction):
+        inter.author.id
         pass
 
     @manager.sub_command_group(name="extension")

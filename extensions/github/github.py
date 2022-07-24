@@ -24,7 +24,7 @@ class GitHub(commands.Cog):
         await inter.response.send_message(self.url + "/pulls")
 
     @github.sub_command(name="builds")
-    async def prs(self, inter: disnake.ApplicationCommandInteraction):
+    async def builds(self, inter: disnake.ApplicationCommandInteraction):
         await inter.response.send_message(self.url + "/actions/workflows/gradle.yml")
 
 
