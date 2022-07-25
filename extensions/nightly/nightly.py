@@ -5,7 +5,7 @@ import requests
 from bot import CBCBot
 import zipfile
 from io import BytesIO
-from time import sleep, time
+from shutil import rmtree
 
 
 class Nightly(commands.Cog):
@@ -22,17 +22,11 @@ class Nightly(commands.Cog):
             auth=self.auth,
         ).json()
 
-        f: str = None
-
-        for f in os.listdir(path=self.bot.path + "/extensions/nightly/cache/"):
-            if not f.endswith(str(response["artifacts"][0]["workflow_run"]["id"])):
-                await inter.response.defer()
-                os.remove(os.path.join(self.bot.path + "/extensions/nightly/cache/", f))
-                self.download_jar(response=response)
-                break
-
-        if f == "" or f == None:
+        if not str(response["artifacts"][0]["workflow_run"]["id"]) in os.listdir(
+            path=self.bot.path + "/extensions/nightly/cache/"
+        ):
             await inter.response.defer()
+            rmtree(self.bot.path + "/extensions/nightly/cache/")
             self.download_jar(response=response)
 
         file = disnake.File(
