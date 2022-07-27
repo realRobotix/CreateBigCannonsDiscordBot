@@ -72,7 +72,7 @@ class Download(commands.Cog):
     async def nightly(self, inter: disnake.ApplicationCommandInteraction):
         auth = (self.bot.env.GH_API_USER, self.bot.env.GH_API_TOKEN)
         response = requests.get(
-            url=self.bot.env.GH_API_URL,
+            url=self.bot.env.GH_API_URL + "/actions/artifacts",
             params={"per_page": 1},
             auth=auth,
         ).json()
