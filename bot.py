@@ -20,7 +20,7 @@ class CBCBot(commands.InteractionBot):
             )
         )
         super().__init__(
-            test_guilds=[970711821478686721, 996633868692111381],
+            test_guilds=self.env.BOT_TEST_GUILDS,
             intents=disnake.Intents.default(),
             auto_sync=True,
             sync_commands=True,
