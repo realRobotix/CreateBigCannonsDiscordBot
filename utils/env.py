@@ -11,6 +11,7 @@ class Env:
         except Exception:
             pass
         self.BOT_DISCORD_TOKEN: str = environ["BOT_DISCORD_TOKEN"]
+        self.BOT_OWNER_AVATAR_URL: str = environ["BOT_OWNER_AVATAR_URL"]
         self.BOT_DEVELOPERS: Set[int] = set(
             map(int, literal_eval(environ["BOT_DEVELOPERS"]))
         )

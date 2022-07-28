@@ -1,6 +1,5 @@
 from io import BytesIO
-from typing import Dict, List, Union
-from urllib import response
+from typing import List, Union
 import disnake
 from disnake.ext import commands
 import os
@@ -22,7 +21,9 @@ class Download(commands.Cog):
 
     @download.sub_command(name="info")
     async def info(self, inter: disnake.ApplicationCommandInteraction):
-        await inter.response.send_message(embed=DownloadEmbed())
+        await inter.response.send_message(
+            embed=DownloadEmbed(self.bot.env.BOT_OWNER_AVATAR_URL)
+        )
 
     @download.sub_command(name="latest")
     async def latest(
@@ -167,7 +168,7 @@ class Download(commands.Cog):
 
 
 class DownloadEmbed(disnake.Embed):
-    def __init__(self):
+    def __init__(self, icon_url: str):
         super().__init__(title="Downloads:")
         self.add_field(
             name="Latest Release:",
@@ -194,6 +195,7 @@ class DownloadEmbed(disnake.Embed):
             value="use `/download nightly`\n(returns an automatically compiled .jar from the latest github commit)\nor follow the steps in https://github.com/rbasamoyai/CreateBigCannons/blob/1.18.2/download_nightly.md",
             inline=False,
         )
+        self.set_footer(text="made with ❤️ by Robotix#2605", icon_url=icon_url)
 
 
 def setup(bot: commands.Bot):
