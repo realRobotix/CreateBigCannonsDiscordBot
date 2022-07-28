@@ -170,28 +170,28 @@ class DownloadEmbed(disnake.Embed):
     def __init__(self):
         super().__init__(title="Downloads:")
         self.add_field(
-            name="Latest:",
-            value="use `/download latest` (doesn't include nightly builds) or download the mod from\nhttps://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
+            name="Latest Release:",
+            value="use `/download latest`\n(returns the latest CurseForge release, doesn't include nightly builds)\nor download the mod from https://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
             inline=False,
         )
         self.add_field(
             name="Release:",
-            value="use `/download release` or download the mod from\nhttps://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
+            value="use `/download release`\nor download the mod from https://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
             inline=False,
         )
         self.add_field(
             name="Beta:",
-            value="use `/download beta` or download the mod from\nhttps://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
+            value="use `/download beta`\nor download the mod from https://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
             inline=False,
         )
         self.add_field(
             name="Alpha:",
-            value="use `/download alpha` or download the mod from\nhttps://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
+            value="use `/download alpha`\nor download the mod from https://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
             inline=False,
         )
         self.add_field(
             name="Nightly:",
-            value="use `/download nightly` or follow the steps in\nhttps://github.com/rbasamoyai/CreateBigCannons/blob/1.18.2/download_nightly.md",
+            value="use `/download nightly`\n(returns an automatically compiled .jar from the latest github commit)\nor follow the steps in https://github.com/rbasamoyai/CreateBigCannons/blob/1.18.2/download_nightly.md",
             inline=False,
         )
 
