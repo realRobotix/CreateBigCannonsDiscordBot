@@ -25,17 +25,6 @@ class Download(commands.Cog):
             embed=DownloadEmbed(self.bot.env.BOT_OWNER_AVATAR_URL)
         )
 
-    @download.sub_command(name="latest")
-    async def latest(
-        self, inter: disnake.ApplicationCommandInteraction, game_version: str = "1.18.2"
-    ):
-        await inter.response.defer()
-        file = self.cf_check_cache(game_version=game_version, rel_type=0)
-        if file != None:
-            await inter.edit_original_message(file=file)
-        else:
-            await inter.edit_original_message("Could not find a full release.")
-
     @download.sub_command(name="release")
     async def release(
         self, inter: disnake.ApplicationCommandInteraction, game_version: str = "1.18.2"
@@ -119,16 +108,6 @@ class Download(commands.Cog):
     def cf_check_cache(self, game_version: str, rel_type: int):
         uri = "https://api.curseforge.com"
         headers = {"Accept": "application/json", "x-api-key": self.bot.env.CF_API_KEY}
-        match rel_type:
-            case 0:
-                cache_dir = f"{self.path}/cache/latest/"
-            case 1:
-                cache_dir = f"{self.path}/cache/release/"
-            case 2:
-                cache_dir = f"{self.path}/cache/beta/"
-            case 3:
-                cache_dir = f"{self.path}/cache/alpha/"
-        os.makedirs(cache_dir, exist_ok=True)
         page = 0
         for i in range(10):
             response: List[dict] = requests.get(
@@ -139,10 +118,17 @@ class Download(commands.Cog):
             files = response["data"]
             for file in files:
                 if (
-                    file["releaseType"] == rel_type
-                    or rel_type == 0
+                    file["releaseType"] in range(1, rel_type + 1)
                     and file["isAvailable"]
                 ):
+                    match file["releaseType"]:
+                        case 1:
+                            cache_dir = f"{self.path}/cache/release/"
+                        case 2:
+                            cache_dir = f"{self.path}/cache/beta/"
+                        case 3:
+                            cache_dir = f"{self.path}/cache/alpha/"
+                    os.makedirs(cache_dir, exist_ok=True)
                     if not str(file["id"]) in os.listdir(path=cache_dir):
                         rmtree(cache_dir, ignore_errors=True)
                         os.makedirs(name=cache_dir + str(file["id"]))
@@ -171,23 +157,18 @@ class DownloadEmbed(disnake.Embed):
     def __init__(self, icon_url: str):
         super().__init__(title="Downloads:")
         self.add_field(
-            name="Latest Release:",
-            value="use `/download latest`\n(returns the latest CurseForge release, doesn't include nightly builds)\nor download the mod from https://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
-            inline=False,
-        )
-        self.add_field(
             name="Release:",
-            value="use `/download release`\nor download the mod from https://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
+            value="use `/download release`\nreturns the latest CurseForge release",
             inline=False,
         )
         self.add_field(
             name="Beta:",
-            value="use `/download beta`\nor download the mod from https://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
+            value="use `/download beta`\nreturns the latest CurseForge beta (might also return a release if it's more recent)",
             inline=False,
         )
         self.add_field(
             name="Alpha:",
-            value="use `/download alpha`\nor download the mod from https://www.curseforge.com/minecraft/mc-mods/create-big-cannons/files",
+            value="use `/download alpha`\nreturns the latest CurseForge alpha (might also return a release or beta if it's more recent)",
             inline=False,
         )
         self.add_field(
