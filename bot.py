@@ -21,7 +21,7 @@ class CBCBot(commands.InteractionBot):
         )
         super().__init__(
             test_guilds=self.env.BOT_TEST_GUILDS,
-            intents=disnake.Intents.default(),
+            intents=disnake.Intents.all(),
             auto_sync=True,
             sync_commands=True,
             reload=self.env.BOT_AUTO_RELOAD,

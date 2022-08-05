@@ -24,18 +24,20 @@ class Moderator(commands.Cog):
         member: disnake.Member = None,
         regex: str = None,
     ):
+
         if regex != None:
             pattern = re.compile(regex)
 
         def check(m: disnake.Message):
-            if member != None and regex != None:
-                return m.author == member and re.search(pattern, m.content)
-            if member != None or regex != None:
-                return m.author == member or re.search(pattern, m.content)
-            return True
+            result = True
+            if member != None:
+                result = result and m.author == member
+            if regex != None:
+                result = result and re.search(pattern, m.clean_content) != None
+            return result
 
         await inter.response.defer(ephemeral=True)
-        deleted = await inter.channel.purge(limit=limit, check=check)
+        deleted = await inter.channel.purge(limit=limit, check=check, bulk=True)
         await inter.edit_original_message(content=f"deleted {len(deleted)} messages")
 
 
