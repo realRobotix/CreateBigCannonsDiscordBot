@@ -1,3 +1,4 @@
+from typing import List
 import disnake
 from disnake.ext import commands
 import re
@@ -11,11 +12,11 @@ class Moderator(commands.Cog):
     async def moderator(self, inter: disnake.ApplicationCommandInteraction):
         pass
 
-    @moderator.sub_command_group(name="messages")
+    @moderator.sub_command_group(name="channel")
     async def messages(self, inter: disnake.ApplicationCommandInteraction):
         pass
 
-    @messages.sub_command(name="delete")
+    @messages.sub_command(name="purge")
     @commands.has_permissions(manage_messages=True)
     async def delete(
         self,
@@ -23,6 +24,8 @@ class Moderator(commands.Cog):
         limit: int,
         member: disnake.Member = None,
         regex: str = None,
+        channel: disnake.TextChannel = None,
+        server: bool = False,
     ):
 
         if regex != None:
@@ -37,7 +40,14 @@ class Moderator(commands.Cog):
             return result
 
         await inter.response.defer(ephemeral=True)
-        deleted = await inter.channel.purge(limit=limit, check=check, bulk=True)
+        if server:
+            deleted: List[disnake.Message] = []
+            for channel in inter.guild.text_channels:
+                deleted.extend(await channel.purge(limit=limit, check=check, bulk=True))
+        elif channel != None:
+            deleted = await channel.purge(limit=limit, check=check, bulk=True)
+        else:
+            deleted = await inter.channel.purge(limit=limit, check=check, bulk=True)
         await inter.edit_original_message(content=f"deleted {len(deleted)} messages")
 
 
