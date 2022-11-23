@@ -15,7 +15,7 @@ class Stars(commands.Cog):
     async def on_raw_reaction_add(self, event: disnake.RawReactionActionEvent):
         if self.first_run:
             repost_channel = self.bot.get_channel(self.bot.env.STARS_REPOST_CHANNEL_ID)
-            messages = await repost_channel.history(limit=10).flatten()
+            messages = await repost_channel.history(limit=100).flatten()
             for message in messages:
                 if len(message.embeds) > 0:
                     first_embed = message.embeds[0]
