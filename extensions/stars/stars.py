@@ -2,6 +2,7 @@ import disnake
 from disnake.ext import commands
 from bot import CBCBot
 from base64 import b64decode, b64encode
+from typing import Tuple, List
 
 
 class Stars(commands.Cog):
@@ -17,13 +18,13 @@ class Stars(commands.Cog):
             messages = await repost_channel.history(limit=10).flatten()
             for message in messages:
                 if len(message.embeds) > 0:
-                    embed = message.embeds[0]
+                    first_embed = message.embeds[0]
                     if (
-                        type(embed.footer.text) != disnake.embeds._EmptyEmbed
-                        and embed.footer != None
-                        and embed.footer.text != None
+                        type(first_embed.footer.text) != disnake.embeds._EmptyEmbed
+                        and first_embed.footer != None
+                        and first_embed.footer.text != None
                     ):
-                        self.reposted.add(int(embed.footer.text))
+                        self.reposted.add(int(first_embed.footer.text))
             self.first_run = False
         if (
             event.emoji.name == "⭐"
@@ -46,7 +47,7 @@ class Stars(commands.Cog):
                     # repost the message within an embed to the repost channel
                     repost_channel = self.bot.get_channel(self.bot.env.STARS_REPOST_CHANNEL_ID)
 
-                    embed = (
+                    first_embed = (
                         disnake.Embed(
                             color=disnake.Colour.gold(),
                             url=message.jump_url,
@@ -59,31 +60,39 @@ class Stars(commands.Cog):
                             inline=False,
                         )
                     )
+
                     if message.content != None and message.content != "":
-                        embed.add_field(
+                        first_embed.add_field(
                             name="Message",
                             value=message.content,
                         )
+
                     if len(message.attachments) > 0:
                         for i, attachment in enumerate(message.attachments):
-                            embed.add_field(name=f"Attachment {i + 1}", value=attachment.url, inline=False)
+                            first_embed.add_field(name=f"Attachment {i + 1}", value=attachment.url, inline=False)
+
                         if message.attachments[0].content_type.startswith("image"):
-                            embed.set_image(url=message.attachments[0].url)
-                        else:
-                            await repost_channel.send(embed=embed)
-                            await repost_channel.send(
-                                files=[await attachment.to_file() for attachment in message.attachments]
-                            )
-                            return
-                    if len(message.attachments) > 1:
-                        await repost_channel.send(embed=embed)
-                        await repost_channel.send(
-                            files=[await attachment.to_file() for attachment in message.attachments[1:]]
-                        )
-                        return
-                    else:
-                        await repost_channel.send(embed=embed)
+                            first_embed.set_image(url=message.attachments.pop(0).url)
+
+                    embeds, other_attachments = await self.make_image_embeds(message.attachments)
+                    embeds.insert(0, first_embed)
+
+                    await repost_channel.send(embeds=embeds)
+                    await repost_channel.send(files=other_attachments)
                     self.reposted.add(message.id)
+
+    async def make_image_embeds(
+        self,
+        attachments: List[disnake.Attachment],
+    ):
+        embeds = []
+        other_attachments = []
+        for attachment in attachments:
+            if attachment.content_type.startswith("image"):
+                embeds.append(disnake.Embed(colour=disnake.Colour.gold()).set_image(url=attachment.url))
+            else:
+                other_attachments.append(await attachment.to_file())
+        return embeds, other_attachments
 
 
 def setup(bot: CBCBot):
