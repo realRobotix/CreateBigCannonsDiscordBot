@@ -12,14 +12,10 @@ class Env:
             pass
         self.BOT_DISCORD_TOKEN: str = environ["BOT_DISCORD_TOKEN"]
         self.BOT_OWNER_AVATAR_URL: str = environ["BOT_OWNER_AVATAR_URL"]
-        self.BOT_DEVELOPERS: Set[int] = set(
-            map(int, literal_eval(environ["BOT_DEVELOPERS"]))
-        )
+        self.BOT_DEVELOPERS: Set[int] = set(map(int, literal_eval(environ["BOT_DEVELOPERS"])))
         self.BOT_AUTO_RELOAD: bool = environ["BOT_AUTO_RELOAD"]
         self.BOT_AUTO_LOAD: bool = environ["BOT_AUTO_LOAD"]
-        self.BOT_TEST_GUILDS: Set[int] = set(
-            map(int, literal_eval(environ["BOT_TEST_GUILDS"]))
-        )
+        self.BOT_TEST_GUILDS: Set[int] = set(map(int, literal_eval(environ["BOT_TEST_GUILDS"])))
 
         self.MOD_LATEST_MC_VERSION: str = environ["MOD_LATEST_MC_VERSION"]
 
@@ -29,3 +25,8 @@ class Env:
 
         self.CF_API_MOD_ID: str = environ["CF_API_MOD_ID"]
         self.CF_API_KEY: str = environ["CF_API_KEY"]
+
+        self.STARS_VOTE_CHANNEL_ID: int = int(environ["STARS_VOTE_CHANNEL_ID"])
+        self.STARS_REPOST_CHANNEL_ID: int = int(environ["STARS_REPOST_CHANNEL_ID"])
+        self.STARS_THRESHOLD: int = int(environ["STARS_THRESHOLD"])
+        self.STARS_BYPASS: Set[int] = set(map(int, literal_eval(environ["STARS_BYPASS"])))

@@ -8,7 +8,7 @@ from utils import env
 from utils.exeptions import ExtensionLoadExeption
 
 
-class CBCBot(commands.InteractionBot):
+class CBCBot(commands.Bot):
     def __init__(self):
         self.path = str(pathlib.Path(__file__).parent.resolve())
         self.env = env.Env()
