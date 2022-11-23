@@ -70,9 +70,10 @@ class Stars(commands.Cog):
                     if len(message.attachments) > 0:
                         for i, attachment in enumerate(message.attachments):
                             first_embed.add_field(name=f"Attachment {i + 1}", value=attachment.url, inline=False)
-
-                        if message.attachments[0].content_type.startswith("image"):
-                            first_embed.set_image(url=message.attachments.pop(0).url)
+                        for i, attachment in enumerate(message.attachments):
+                            if attachment.content_type != None and message.attachment.content_type.startswith("image"):
+                                first_embed.set_image(url=message.attachments.pop(i).url)
+                                break
 
                     embeds, other_attachments = await self.make_image_embeds(message.attachments)
                     embeds.insert(0, first_embed)
@@ -88,7 +89,7 @@ class Stars(commands.Cog):
         embeds = []
         other_attachments = []
         for attachment in attachments:
-            if attachment.content_type.startswith("image"):
+            if attachment.content_type != None and attachment.content_type.startswith("image"):
                 embeds.append(disnake.Embed(colour=disnake.Colour.gold()).set_image(url=attachment.url))
             else:
                 other_attachments.append(await attachment.to_file())
