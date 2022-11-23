@@ -12,13 +12,7 @@ class CBCBot(commands.Bot):
     def __init__(self):
         self.path = str(pathlib.Path(__file__).parent.resolve())
         self.env = env.Env()
-        self.logger = logging.Logger("disnake", level=logging.DEBUG).addHandler(
-            logging.FileHandler(
-                filename=f"{self.path}/disnake.log", encoding="utf-8", mode="w"
-            ).setFormatter(
-                logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
-            )
-        )
+        logging.basicConfig(level=logging.INFO)
         super().__init__(
             test_guilds=self.env.BOT_TEST_GUILDS,
             intents=disnake.Intents.all(),
@@ -33,11 +27,7 @@ class CBCBot(commands.Bot):
                 fullPath = os.path.join(dirpath, file)
                 if file.endswith(".py") and not file.startswith("_"):
                     extension = (
-                        "extensions."
-                        + fullPath[:-3]
-                        .replace("/", ".")
-                        .replace("\\", ".")
-                        .split("extensions.")[1]
+                        "extensions." + fullPath[:-3].replace("/", ".").replace("\\", ".").split("extensions.")[1]
                     )
                     try:
                         self.load_extension(extension)
@@ -49,20 +39,14 @@ class CBCBot(commands.Bot):
                     fullPath = os.path.join(dirpath, file)
                     if file.endswith(".py") and not file.startswith("_"):
                         extension = (
-                            "extensions."
-                            + fullPath[:-3]
-                            .replace("/", ".")
-                            .replace("\\", ".")
-                            .split("extensions.")[1]
+                            "extensions." + fullPath[:-3].replace("/", ".").replace("\\", ".").split("extensions.")[1]
                         )
                         if extension.startswith("extensions.base"):
                             continue
                         try:
                             self.load_extension(extension)
                         except Exception as e:
-                            raise ExtensionLoadExeption(
-                                f"Failed to load {extension}\n{e}"
-                            )
+                            raise ExtensionLoadExeption(f"Failed to load {extension}\n{e}")
         print("starting")
         self.run(self.env.BOT_DISCORD_TOKEN)
 

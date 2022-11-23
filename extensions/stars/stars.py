@@ -45,6 +45,7 @@ class Stars(commands.Cog):
                 ):
                     # repost the message within an embed to the repost channel
                     repost_channel = self.bot.get_channel(self.bot.env.STARS_REPOST_CHANNEL_ID)
+
                     embed = (
                         disnake.Embed(
                             color=disnake.Colour.gold(),
@@ -53,15 +54,16 @@ class Stars(commands.Cog):
                         .set_author(name=message.author.display_name, icon_url=message.author.avatar.url)
                         .set_footer(text=message.id)
                         .add_field(
-                            name="Message",
-                            value=message.content,
-                        )
-                        .add_field(
                             name="Original message",
                             value=f"[Jump to message]({message.jump_url})",
                             inline=False,
                         )
                     )
+                    if message.content != None and message.content != "":
+                        embed.add_field(
+                            name="Message",
+                            value=message.content,
+                        )
                     if len(message.attachments) > 0:
                         for i, attachment in enumerate(message.attachments):
                             embed.add_field(name=f"Attachment {i + 1}", value=attachment.url, inline=False)
