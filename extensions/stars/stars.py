@@ -71,7 +71,7 @@ class Stars(commands.Cog):
                         for i, attachment in enumerate(message.attachments):
                             first_embed.add_field(name=f"Attachment {i + 1}", value=attachment.url, inline=False)
                         for i, attachment in enumerate(message.attachments):
-                            if attachment.content_type != None and message.attachment.content_type.startswith("image"):
+                            if attachment.content_type != None and attachment.content_type.startswith("image"):
                                 first_embed.set_image(url=message.attachments.pop(i).url)
                                 break
 
