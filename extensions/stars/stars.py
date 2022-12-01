@@ -53,7 +53,7 @@ class Stars(commands.Cog):
                             url=message.jump_url,
                         )
                         .set_author(name=message.author.display_name, icon_url=message.author.avatar.url)
-                        .set_footer(text=message.id)
+                        .set_footer(text=event.message_id)
                         .add_field(
                             name="Original message",
                             value=f"[Jump to message]({message.jump_url})",
@@ -80,7 +80,7 @@ class Stars(commands.Cog):
 
                     await repost_channel.send(embeds=embeds)
                     await repost_channel.send(files=other_attachments)
-                    self.reposted.add(message.id)
+                    self.reposted.add(event.message_id)
 
     async def make_image_embeds(
         self,
