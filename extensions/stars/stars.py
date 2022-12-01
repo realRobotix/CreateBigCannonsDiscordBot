@@ -79,7 +79,8 @@ class Stars(commands.Cog):
                     embeds.insert(0, first_embed)
 
                     await repost_channel.send(embeds=embeds)
-                    await repost_channel.send(files=other_attachments)
+                    if other_attachments != None and other_attachments != []:
+                        await repost_channel.send(files=other_attachments)
                     self.reposted.add(event.message_id)
 
     async def make_image_embeds(
