@@ -12,11 +12,7 @@ class Moderator(commands.Cog):
     async def moderator(self, inter: disnake.ApplicationCommandInteraction):
         pass
 
-    @moderator.sub_command_group(name="channel")
-    async def messages(self, inter: disnake.ApplicationCommandInteraction):
-        pass
-
-    @messages.sub_command(name="purge")
+    @moderator.sub_command(name="purge")
     @commands.has_permissions(manage_messages=True)
     async def delete(
         self,
