@@ -14,7 +14,7 @@ class Env:
         self.BOT_OWNER_AVATAR_URL: str = environ["BOT_OWNER_AVATAR_URL"]
         self.BOT_DEVELOPERS: Set[int] = set(map(int, literal_eval(environ["BOT_DEVELOPERS"])))
         self.BOT_AUTO_RELOAD: bool = environ["BOT_AUTO_RELOAD"]
-        self.BOT_AUTO_LOAD: bool = environ["BOT_AUTO_LOAD"]
+        self.BOT_AUTO_LOAD: Set[str] = literal_eval(environ["BOT_AUTO_LOAD"])
         self.BOT_TEST_GUILDS: Set[int] = set(map(int, literal_eval(environ["BOT_TEST_GUILDS"])))
 
         self.MOD_LATEST_MC_VERSION: str = environ["MOD_LATEST_MC_VERSION"]

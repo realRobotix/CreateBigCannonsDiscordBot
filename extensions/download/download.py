@@ -17,18 +17,18 @@ class Download(commands.Cog):
 
     @commands.slash_command(name="download")
     async def download(self, inter: disnake.ApplicationCommandInteraction):
-        pass
-
-    @download.sub_command(name="info")
-    async def info(self, inter: disnake.ApplicationCommandInteraction):
         await inter.response.send_message(
-            embed=DownloadEmbed(self.bot.env.BOT_OWNER_AVATAR_URL)
+            content="This feature has been deprecated. The nightly versions are now available in #nightly-downloads."
         )
 
+
+""" 
+    @download.sub_command(name="info")
+    async def info(self, inter: disnake.ApplicationCommandInteraction):
+        await inter.response.send_message(embed=DownloadEmbed(self.bot.env.BOT_OWNER_AVATAR_URL))
+
     @download.sub_command(name="release")
-    async def release(
-        self, inter: disnake.ApplicationCommandInteraction, game_version: str = "1.18.2"
-    ):
+    async def release(self, inter: disnake.ApplicationCommandInteraction, game_version: str = "1.18.2"):
         await inter.response.defer()
         file = self.cf_check_cache(game_version=game_version, rel_type=1)
         if file != None:
@@ -37,9 +37,7 @@ class Download(commands.Cog):
             await inter.edit_original_message("Could not find a full release.")
 
     @download.sub_command(name="beta")
-    async def beta(
-        self, inter: disnake.ApplicationCommandInteraction, game_version: str = "1.18.2"
-    ):
+    async def beta(self, inter: disnake.ApplicationCommandInteraction, game_version: str = "1.18.2"):
         await inter.response.defer()
         file = self.cf_check_cache(game_version=game_version, rel_type=2)
         if file != None:
@@ -48,9 +46,7 @@ class Download(commands.Cog):
             await inter.edit_original_message("Could not find a beta release.")
 
     @download.sub_command(name="alpha")
-    async def alpha(
-        self, inter: disnake.ApplicationCommandInteraction, game_version: str = "1.18.2"
-    ):
+    async def alpha(self, inter: disnake.ApplicationCommandInteraction, game_version: str = "1.18.2"):
         await inter.response.defer()
         file = self.cf_check_cache(game_version=game_version, rel_type=3)
         if file != None:
@@ -67,9 +63,7 @@ class Download(commands.Cog):
             auth=auth,
         ).json()
         os.makedirs(self.path + "/cache/nightly/", exist_ok=True)
-        if not str(response["artifacts"][0]["workflow_run"]["id"]) in os.listdir(
-            path=self.path + "/cache/nightly/"
-        ):
+        if not str(response["artifacts"][0]["workflow_run"]["id"]) in os.listdir(path=self.path + "/cache/nightly/"):
             await inter.response.defer()
             rmtree(self.path + "/cache/nightly/")
 
@@ -83,9 +77,7 @@ class Download(commands.Cog):
             ) as z:
                 z.extract(
                     member=z.filelist[0],
-                    path=self.path
-                    + "/cache/nightly/"
-                    + str(response["artifacts"][0]["workflow_run"]["id"]),
+                    path=self.path + "/cache/nightly/" + str(response["artifacts"][0]["workflow_run"]["id"]),
                 )
 
         file = disnake.File(
@@ -93,11 +85,7 @@ class Download(commands.Cog):
             + "/cache/nightly/"
             + str(response["artifacts"][0]["workflow_run"]["id"])
             + "/"
-            + os.listdir(
-                path=self.path
-                + "/cache/nightly/"
-                + str(response["artifacts"][0]["workflow_run"]["id"])
-            )[0]
+            + os.listdir(path=self.path + "/cache/nightly/" + str(response["artifacts"][0]["workflow_run"]["id"]))[0]
         )
 
         if inter.response.is_done():
@@ -117,10 +105,7 @@ class Download(commands.Cog):
             ).json()
             files = response["data"]
             for file in files:
-                if (
-                    file["releaseType"] in range(1, rel_type + 1)
-                    and file["isAvailable"]
-                ):
+                if file["releaseType"] in range(1, rel_type + 1) and file["isAvailable"]:
                     match file["releaseType"]:
                         case 1:
                             cache_dir = f"{self.path}/cache/release/"
@@ -136,14 +121,8 @@ class Download(commands.Cog):
                             cache_dir + str(file["id"]) + "/" + file["fileName"],
                             mode="wb",
                         ) as f:
-                            f.write(
-                                requests.get(
-                                    url=file["downloadUrl"], stream=True
-                                ).content
-                            )
-                    return disnake.File(
-                        fp=cache_dir + str(file["id"]) + "/" + file["fileName"]
-                    )
+                            f.write(requests.get(url=file["downloadUrl"], stream=True).content)
+                    return disnake.File(fp=cache_dir + str(file["id"]) + "/" + file["fileName"])
             page += response["pagination"]["pageSize"]
             if (
                 response["pagination"]["totalCount"] - response["pagination"]["index"]
@@ -177,6 +156,7 @@ class DownloadEmbed(disnake.Embed):
             inline=False,
         )
         self.set_footer(text="made with ❤️ by Robotix#2605", icon_url=icon_url)
+"""
 
 
 def setup(bot: commands.Bot):

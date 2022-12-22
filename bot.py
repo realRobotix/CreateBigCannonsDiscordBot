@@ -16,7 +16,6 @@ class CBCBot(commands.Bot):
         super().__init__(
             test_guilds=self.env.BOT_TEST_GUILDS,
             intents=disnake.Intents.all(),
-            auto_sync=True,
             sync_commands=True,
             reload=self.env.BOT_AUTO_RELOAD,
             owner_ids=self.env.BOT_DEVELOPERS,
@@ -33,20 +32,19 @@ class CBCBot(commands.Bot):
                         self.load_extension(extension)
                     except Exception as e:
                         raise ExtensionLoadExeption(f"Failed to load {extension}\n{e}")
-        if self.env.BOT_AUTO_LOAD:
-            for (dirpath, dirname, filenames) in os.walk(f"{self.path}/extensions"):
-                for file in filenames:
-                    fullPath = os.path.join(dirpath, file)
-                    if file.endswith(".py") and not file.startswith("_"):
-                        extension = (
-                            "extensions." + fullPath[:-3].replace("/", ".").replace("\\", ".").split("extensions.")[1]
-                        )
-                        if extension.startswith("extensions.base"):
-                            continue
-                        try:
-                            self.load_extension(extension)
-                        except Exception as e:
-                            raise ExtensionLoadExeption(f"Failed to load {extension}\n{e}")
+        for (dirpath, dirname, filenames) in os.walk(f"{self.path}/extensions"):
+            for file in filenames:
+                fullPath = os.path.join(dirpath, file)
+                if file.endswith(".py") and not file.startswith("_"):
+                    extension = (
+                        "extensions." + fullPath[:-3].replace("/", ".").replace("\\", ".").split("extensions.")[1]
+                    )
+                    if extension.startswith("extensions.base") or extension not in self.env.BOT_AUTO_LOAD:
+                        continue
+                    try:
+                        self.load_extension(extension)
+                    except Exception as e:
+                        raise ExtensionLoadExeption(f"Failed to load {extension}\n{e}")
         print("starting")
         self.run(self.env.BOT_DISCORD_TOKEN)
 
