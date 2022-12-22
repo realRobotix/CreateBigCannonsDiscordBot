@@ -8,7 +8,7 @@ from utils import env
 from utils.exeptions import ExtensionLoadExeption
 
 
-class CBCBot(commands.Bot):
+class CBCBot(commands.InteractionBot):
     def __init__(self):
         self.path = str(pathlib.Path(__file__).parent.resolve())
         self.env = env.Env()
@@ -16,9 +16,9 @@ class CBCBot(commands.Bot):
         super().__init__(
             test_guilds=self.env.BOT_TEST_GUILDS,
             intents=disnake.Intents.all(),
-            sync_commands=True,
             reload=self.env.BOT_AUTO_RELOAD,
             owner_ids=self.env.BOT_DEVELOPERS,
+            command_sync_flags=commands.CommandSyncFlags().all(),
         )
 
         for (dirpath, dirname, filenames) in os.walk(f"{self.path}/extensions/base"):
