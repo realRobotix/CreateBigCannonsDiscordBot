@@ -18,11 +18,7 @@ class Stars(commands.Cog):
             for message in messages:
                 if len(message.embeds) > 0:
                     first_embed = message.embeds[0]
-                    if (
-                        type(first_embed.footer.text) != disnake.embeds._EmptyEmbed
-                        and first_embed.footer != None
-                        and first_embed.footer.text != None
-                    ):
+                    if first_embed.footer.text != None:
                         self.reposted.add(int(first_embed.footer.text))
             self.first_run = False
         if (
