@@ -39,7 +39,8 @@ class Moderator(commands.Cog):
         if server:
             deleted: List[disnake.Message] = []
             for channel in inter.guild.text_channels:
-                deleted.extend(await channel.purge(limit=limit, check=check, bulk=True))
+                if channel.permissions_for(inter.guild.me).manage_messages:
+                    deleted.extend(await channel.purge(limit=limit, check=check, bulk=True))
         elif channel != None:
             deleted = await channel.purge(limit=limit, check=check, bulk=True)
         else:
