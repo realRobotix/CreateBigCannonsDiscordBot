@@ -26,7 +26,7 @@ class Env:
         self.CF_API_MOD_ID: str = environ["CF_API_MOD_ID"]
         self.CF_API_KEY: str = environ["CF_API_KEY"]
 
-        self.STARS_VOTE_CHANNEL_IDS: Set[int] = set(map(int, literal_eval(environ["STARS_VOTE_CHANNEL_ID"])))
+        self.STARS_VOTE_CHANNEL_IDS: Set[int] = set(map(int, literal_eval(environ["STARS_VOTE_CHANNEL_IDS"])))
         self.STARS_REPOST_CHANNEL_ID: int = int(environ["STARS_REPOST_CHANNEL_ID"])
         self.STARS_THRESHOLD: int = int(environ["STARS_THRESHOLD"])
         self.STARS_BYPASS: Set[int] = set(map(int, literal_eval(environ["STARS_BYPASS"])))
