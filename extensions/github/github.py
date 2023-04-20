@@ -5,7 +5,7 @@ from disnake.ext import commands
 class GitHub(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.url = "https://github.com/rbasamoyai/CreateBigCannons"
+        self.url = "https://github.com/Cannoneers-of-Create/CreateBigCannons"
 
     @commands.slash_command(name="github")
     async def github(self, inter: disnake.ApplicationCommandInteraction):
