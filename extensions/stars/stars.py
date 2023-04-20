@@ -22,10 +22,9 @@ class Stars(commands.Cog):
                     if first_embed.footer.text != None:
                         self.reposted.add(int(first_embed.footer.text))
             self.first_run = False
-        if (
-            event.emoji.name == "⭐"
-            and event.channel_id == self.bot.env.STARS_VOTE_CHANNEL_ID
-            and event.message_id not in self.reposted
+        if event.emoji.name == "⭐" and (
+            (event.channel_id in self.bot.env.STARS_VOTE_CHANNEL_IDS and event.message_id not in self.reposted)
+            or await self.bot.is_owner(event.member)
         ):
             channel = self.bot.get_channel(event.channel_id)
             message = await channel.fetch_message(event.message_id)
