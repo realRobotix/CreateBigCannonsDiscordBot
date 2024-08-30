@@ -9,7 +9,7 @@ class Nuclear(commands.Cog):
 
     @commands.slash_command(name="nuclear")
     async def nuclear(self, inter: disnake.ApplicationCommandInteraction):
-        inter.response.send_message(
+        await inter.response.send_message(
             """# CBC: Nuclear
 
 is a **Create Big Cannons** addon that adds simple yet devastating integration between Create Big Cannons and Alex's Caves.

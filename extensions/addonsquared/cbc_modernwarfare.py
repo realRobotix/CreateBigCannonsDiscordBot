@@ -9,7 +9,7 @@ class CBCModernwarfare(commands.Cog):
 
     @commands.slash_command(name="modernwarfare")
     async def modernwarfare(self, inter: disnake.ApplicationCommandInteraction):
-        inter.response.send_message(
+        await inter.response.send_message(
             """# CBC: Modern Warfare
 
 is a **Create Big Cannons** addon that greatly expands on the core gameplay of the base mod with new features inspired by contemporary warfare, such as medium cannons, rotary autocannons, new mounts, and so much more.
