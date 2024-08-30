@@ -23,8 +23,11 @@ class Stars(commands.Cog):
                         self.reposted.add(int(first_embed.footer.text))
             self.first_run = False
         if event.emoji.name == "⭐" and (
-            (event.channel_id in self.bot.env.STARS_VOTE_CHANNEL_IDS and event.message_id not in self.reposted)
-            or event.user_id in self.bot.env.STARS_BYPASS
+            (
+                event.channel_id in self.bot.env.STARS_VOTE_CHANNEL_IDS
+                or event.user_id in self.bot.env.STARS_BYPASS
+            )
+            and event.message_id not in self.reposted
         ):
             channel = self.bot.get_channel(event.channel_id)
             message = await channel.fetch_message(event.message_id)
@@ -35,20 +38,29 @@ class Stars(commands.Cog):
                 if reaction.emoji == "⭐" and (
                     (
                         reaction.count >= self.bot.env.STARS_THRESHOLD
-                        and message.created_at > disnake.utils.utcnow() - timedelta(days=7)
+                        and message.created_at
+                        > disnake.utils.utcnow() - timedelta(days=7)
                         and (message.embeds != None or message.attachments != None)
                     )
-                    or await reaction.users().find(lambda u: u.id in self.bot.env.STARS_BYPASS) != None
+                    or await reaction.users().find(
+                        lambda u: u.id in self.bot.env.STARS_BYPASS
+                    )
+                    != None
                 ):
                     # repost the message within an embed to the repost channel
-                    repost_channel = self.bot.get_channel(self.bot.env.STARS_REPOST_CHANNEL_ID)
+                    repost_channel = self.bot.get_channel(
+                        self.bot.env.STARS_REPOST_CHANNEL_ID
+                    )
 
                     first_embed = (
                         disnake.Embed(
                             color=disnake.Colour.gold(),
                             url=message.jump_url,
                         )
-                        .set_author(name=message.author.display_name, icon_url=message.author.avatar.url)
+                        .set_author(
+                            name=message.author.display_name,
+                            icon_url=message.author.avatar.url,
+                        )
                         .set_footer(text=event.message_id)
                         .add_field(
                             name="Original message",
@@ -65,13 +77,24 @@ class Stars(commands.Cog):
 
                     if len(message.attachments) > 0:
                         for i, attachment in enumerate(message.attachments):
-                            first_embed.add_field(name=f"Attachment {i + 1}", value=attachment.url, inline=False)
+                            first_embed.add_field(
+                                name=f"Attachment {i + 1}",
+                                value=attachment.url,
+                                inline=False,
+                            )
                         for i, attachment in enumerate(message.attachments):
-                            if attachment.content_type != None and attachment.content_type.startswith("image"):
-                                first_embed.set_image(url=message.attachments.pop(i).url)
+                            if (
+                                attachment.content_type != None
+                                and attachment.content_type.startswith("image")
+                            ):
+                                first_embed.set_image(
+                                    url=message.attachments.pop(i).url
+                                )
                                 break
 
-                    embeds, other_attachments = await self.make_image_embeds(message.attachments)
+                    embeds, other_attachments = await self.make_image_embeds(
+                        message.attachments
+                    )
                     embeds.insert(0, first_embed)
 
                     try:
@@ -88,8 +111,14 @@ class Stars(commands.Cog):
         embeds = []
         other_attachments = []
         for attachment in attachments:
-            if attachment.content_type != None and attachment.content_type.startswith("image"):
-                embeds.append(disnake.Embed(colour=disnake.Colour.gold()).set_image(url=attachment.url))
+            if attachment.content_type != None and attachment.content_type.startswith(
+                "image"
+            ):
+                embeds.append(
+                    disnake.Embed(colour=disnake.Colour.gold()).set_image(
+                        url=attachment.url
+                    )
+                )
             else:
                 other_attachments.append(await attachment.to_file())
         return embeds, other_attachments
