@@ -21,7 +21,7 @@ Modrinth: https://modrinth.com/mod/cbc-nuclear
 Note: This addon is currently only available for Create Big Cannons 0.5.4. Stay tuned for support for newer versions of Create Big Cannons.
 
 Developed by <@371393915728822272>."""
-        )
+        , allowed_mentions=disnake.AllowedMentions.none())
 
 
 def setup(bot: commands.Bot):

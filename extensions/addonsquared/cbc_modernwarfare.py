@@ -19,7 +19,7 @@ Server link: https://discord.gg/HmZ8eAayKm
 Note: This addon is still in development.
 
 Developed by <@497573066100965377>."""
-        )
+        , allowed_mentions=disnake.AllowedMentions.none())
 
 
 def setup(bot: commands.Bot):
