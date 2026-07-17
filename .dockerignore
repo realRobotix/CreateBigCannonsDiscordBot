@@ -1,0 +1,14 @@
+.git
+.github
+.idea
+.vscode
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.env
+cache
+extensions/**/cache
+

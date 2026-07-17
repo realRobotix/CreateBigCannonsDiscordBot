@@ -1,0 +1,8 @@
+name: cbcbot-prod
+
+services:
+  cbcbot:
+    image: cbcbot:latest
+    volumes:
+      - ./settings.toml:/app/settings.toml:Z,ro
+

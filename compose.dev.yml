@@ -1,0 +1,8 @@
+name: cbcbot-dev
+
+services:
+  cbcbot:
+    build: .
+    volumes:
+      - ./settings.toml:/app/settings.toml:z,ro
+

@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "createbigcannons-discord-bot"
+version = "0.1.0"
+description = "Discord bot for the Create Big Cannons community"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Create Big Cannons contributors" }]
+dependencies = [
+    "discord.py>=2.7.1,<3.0.0",
+    "pydantic-settings>=2.4.0,<3.0.0",
+    "python-dotenv>=1.0.1,<2.0.0",
+    "requests>=2.34.1,<3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0.0,<10.0.0",
+    "pytest-cov>=7.0.0,<8.0.0",
+    "coverage>=7.6.0,<8.0.0",
+]
+
+[project.scripts]
+cbcbot = "cbcbot.bot:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cbcbot"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/cbcbot", "README.md", "LICENSE", "pyproject.toml"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.coverage.run]
+source = ["cbcbot"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
