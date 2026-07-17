@@ -1,4 +1,4 @@
-FROM python:3.12-alpine AS build
+FROM python:3.14-alpine AS build
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -29,7 +29,7 @@ RUN uv sync --frozen --no-dev
 RUN apk del build-base python3-dev cargo git
 
 # Final stage uses the same image but copies the /app folder
-FROM python:3.12-alpine AS runtime
+FROM python:3.14-alpine AS runtime
 
 WORKDIR /app
 
