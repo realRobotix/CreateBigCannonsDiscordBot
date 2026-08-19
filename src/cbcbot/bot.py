@@ -19,7 +19,12 @@ class CBCBot(commands.Bot):
         }
 
         logging.basicConfig(level=logging.INFO)
-        intents = discord.Intents.all()
+        intents = discord.Intents(
+            message_content=True,
+            guild_messages=True,
+            guild_reactions=True,
+            guilds=True,
+        )
         super().__init__(
             command_prefix="!",
             intents=intents,
